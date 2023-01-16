@@ -1,23 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router';
+import Table from './components/Table';
+import { DataContextProvider } from './contexts/Data';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='main-display'>
+      <nav>
+
+      </nav>
+      <div className="table-display">
+        <Routes>
+          <Route path='/' element={<DataContextProvider><Table /></DataContextProvider>} />
+          <Route path='/:id' element={<DataContextProvider><Table /></DataContextProvider>} />
+        </Routes>
+      </div>
     </div>
   );
 }
