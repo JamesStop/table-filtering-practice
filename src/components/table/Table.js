@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router';
-import { DataContext } from '../contexts/Data';
+import { DataContext } from '../../contexts/Data';
 import './Table.css'
 
 function Table(props) {
