@@ -3,13 +3,13 @@ import { useParams } from 'react-router';
 import { DataContext } from '../../contexts/Data';
 import './Table.css'
 
-function Table(props) {
+function Table({trueFilter}) {
 
     const { id } = useParams();
     // const [filter, setFilter] = useState({})
     const data = useContext(DataContext);
     const [tableData, setTableData] = useState(data)
-
+    const filterCategories = ['type', 'color', 'flavor']
 
     useEffect (() => {
         if (id) {
@@ -29,16 +29,38 @@ function Table(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {tableData.map((plant, index) => {
-                        return (
-                        <tr key={index} className='table-rows'>
-                            <td>{plant.name}</td>
-                            <td>{plant.type}</td>
-                            <td>{plant.color}</td>
-                            <td>{plant.flavor}</td>
-                        </tr>
-                        ) 
-                    })}
+                    {tableData
+                        .filter(plant => { 
+                            if (trueFilter.type.length > 0) {
+                                return trueFilter.type.includes(plant.type)
+                            } else {
+                                return plant
+                            }
+                        })
+                        .filter(plant => {
+                            if (trueFilter.color.length > 0) {
+                                return trueFilter.color.includes(plant.color)
+                            } else {
+                                return plant
+                            }
+                        })
+                        .filter(plant => {
+                            if (trueFilter.flavor.length > 0) {
+                                return trueFilter.flavor.includes(plant.flavor)
+                            } else {
+                                return plant
+                            }
+                        })
+                        .map((plant, index) => {
+                            return (
+                            <tr key={index} className='table-rows'>
+                                <td>{plant.name}</td>
+                                <td>{plant.type}</td>
+                                <td>{plant.color}</td>
+                                <td>{plant.flavor}</td>
+                            </tr>
+                            ) 
+                        })}
                 </tbody>
                 
             </table>

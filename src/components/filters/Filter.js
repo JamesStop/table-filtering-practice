@@ -1,16 +1,22 @@
 import React from 'react';
 import './Filter.css'
 import { useState } from 'react';
-import $ from 'jquery';
 
 function Filter({trueFilter, setTrueFilter}) {
 
     const [colors, setColors] = useState(['red', 'yellow', 'green', 'orange', 'purple'])
     const [flavors, setFlavors] = useState(['bitter', 'spicy', 'sour', 'sweet'])
-    const [newFilter, setNewFilter] = useState(trueFilter)
+    const [newFilter, setNewFilter] = useState({
+        type: [],
+        color: [],
+        flavor: [],
+      })
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
+        console.log(trueFilter)
+        setTrueFilter(newFilter)
+        console.log(trueFilter)
     }
 
     const handleChange = (event) => {

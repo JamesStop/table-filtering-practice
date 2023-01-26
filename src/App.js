@@ -20,8 +20,8 @@ function App() {
       </nav>
       <div className="table-display">
         <Routes>
-          <Route path='/' element={<DataContextProvider><Table /></DataContextProvider>} />
-          <Route path='/:id' element={<DataContextProvider><Table /></DataContextProvider>} />
+          <Route path='/' element={<DataContextProvider><Table trueFilter={trueFilter} /></DataContextProvider>} />
+          <Route path='/:id' element={<DataContextProvider><Table trueFilter={trueFilter}/></DataContextProvider>} />
         </Routes>
       </div>
     </div>
