@@ -14,9 +14,7 @@ function Filter({trueFilter, setTrueFilter}) {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log(trueFilter)
         setTrueFilter(newFilter)
-        console.log(trueFilter)
     }
 
     const handleChange = (event) => {

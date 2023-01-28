@@ -1,13 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router';
-import { DataContext } from '../../contexts/Data';
+import { PlantDataContext } from '../../contexts/plantData';
+import { PlantData2Context } from '../../contexts/plantData2';
 import './Table.css'
+
 
 function Table({trueFilter}) {
 
     const { id } = useParams();
     // const [filter, setFilter] = useState({})
-    const data = useContext(DataContext);
+    const data = useContext(PlantData2Context);
     const [tableData, setTableData] = useState(data)
     const filterCategories = ['type', 'color', 'flavor']
 
@@ -22,42 +24,46 @@ function Table({trueFilter}) {
             <table>
                 <thead>
                     <tr className='table-headers'>
-                        <th className='header-name'>NAME</th>
-                        <th className='header-type'>TYPE</th>
-                        <th className='header-color'>COLOR</th>
-                        <th className='header-flavor'>FLAVOR</th>
+                        {Object.keys(tableData[0]).map(key => {
+                            return (
+                            <th key={key}>{key.toUpperCase()}</th>
+                            )
+                        })}
                     </tr>
                 </thead>
                 <tbody>
                     {tableData
-                        .filter(plant => { 
-                            if (trueFilter.type.length > 0) {
-                                return trueFilter.type.includes(plant.type)
+                        .filter(data => { 
+                            const filterSet = {}
+                            filterCategories.forEach((filter) => {
+                                if (trueFilter[filter].length > 0) {
+                                        filterSet[filter] = trueFilter[filter].includes(data[filter])
+                                } else {
+                                    filterSet[filter] = true
+                                }
+                            })
+                            let filtered = false
+                            let index = 0
+                            while (filtered == false && index < filterCategories.length) {
+                                if (!filterSet[filterCategories[index]]) {
+                                    filtered = true
+                                }
+                                index ++
+                            }
+                            if (filtered ==  true) {
+                                return false
                             } else {
-                                return plant
+                                return true
                             }
                         })
-                        .filter(plant => {
-                            if (trueFilter.color.length > 0) {
-                                return trueFilter.color.includes(plant.color)
-                            } else {
-                                return plant
-                            }
-                        })
-                        .filter(plant => {
-                            if (trueFilter.flavor.length > 0) {
-                                return trueFilter.flavor.includes(plant.flavor)
-                            } else {
-                                return plant
-                            }
-                        })
-                        .map((plant, index) => {
+                        .map((data, index) => {                            
                             return (
                             <tr key={index} className='table-rows'>
-                                <td>{plant.name}</td>
-                                <td>{plant.type}</td>
-                                <td>{plant.color}</td>
-                                <td>{plant.flavor}</td>
+                                {Object.keys(data).map(key => {
+                                    return (
+                                    <td key={key}>{data[key]}</td>
+                                    )
+                                })}
                             </tr>
                             ) 
                         })}

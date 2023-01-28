@@ -1,8 +1,8 @@
 import React, { createContext } from 'react';
 
-const DataContext = createContext();
+const PlantDataContext = createContext();
 
-function DataContextProvider({children}) {
+function PlantDataContextProvider({children}) {
 
     
 
@@ -100,10 +100,10 @@ function DataContextProvider({children}) {
     ]
 
     return (
-        <DataContext.Provider value={DEFAULT_DATA}>
+        <PlantDataContext.Provider value={DEFAULT_DATA}>
 			{children}
-		</DataContext.Provider>
+		</PlantDataContext.Provider>
     );
 }
 
-export { DataContext, DataContextProvider };
+export { PlantDataContext, PlantDataContextProvider };

@@ -2,8 +2,23 @@ import './App.css';
 import { Route, Routes } from 'react-router';
 import Table from './components/table/Table';
 import Filter from './components/filters/Filter';
-import { DataContextProvider } from './contexts/Data';
+import { PlantDataContextProvider } from './contexts/plantData';
+import { PlantData2ContextProvider } from './contexts/plantData2';
 import { useState } from 'react';
+
+
+
+const compose = (providers) => 
+  providers.reduce((Prev, Curr) => ({children}) => (
+    <Prev>
+      <Curr>{children}</Curr>
+    </Prev>
+  ))
+
+const Provider = compose([
+  PlantDataContextProvider,
+  PlantData2ContextProvider
+])
 
 function App() {
 
@@ -13,6 +28,9 @@ function App() {
     flavor: [],
   })
 
+
+
+
   return (
     <div className='main-display'>
       <nav>
@@ -20,8 +38,8 @@ function App() {
       </nav>
       <div className="table-display">
         <Routes>
-          <Route path='/' element={<DataContextProvider><Table trueFilter={trueFilter} /></DataContextProvider>} />
-          <Route path='/:id' element={<DataContextProvider><Table trueFilter={trueFilter}/></DataContextProvider>} />
+          <Route path='/' element={<Provider><Table trueFilter={trueFilter} /></Provider>} />
+          <Route path='/:id' element={<Provider><Table trueFilter={trueFilter}/></Provider>} />
         </Routes>
       </div>
     </div>
