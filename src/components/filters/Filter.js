@@ -1,16 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import { useParams } from 'react-router';
+import { PlantDataContext } from '../../contexts/plantData';
+import { PlantData2Context } from '../../contexts/plantData2';
 import './Filter.css'
-import { useState } from 'react';
 
-function Filter({trueFilter, setTrueFilter}) {
 
-    const [colors, setColors] = useState(['red', 'yellow', 'green', 'orange', 'purple'])
-    const [flavors, setFlavors] = useState(['bitter', 'spicy', 'sour', 'sweet'])
-    const [newFilter, setNewFilter] = useState({
-        type: [],
-        color: [],
-        flavor: [],
-      })
+function Filter({trueFilter, setTrueFilter, currentData}) {
+
+    const { id } = useParams()
+    let data = useContext(PlantDataContext)
+
+    const [filtersOptions, setFiltersOptions] = useState([])
+    const [filtersOptionsOptions, setFiltersOptionsOptions] = useState([])
+    const [newFilter, setNewFilter] = useState({})
+    
+    useEffect (() => {
+        if (id) {
+            console.log(id)
+        }
+    }, []);
+
+    useEffect(() => {
+        if (data.length && data.length > 0) {
+            const allOptions = Object.keys(data[0])
+            let confirmedOptions = []
+            let confirmedOptionOptions = []
+            let confirmedFilter = {}
+            allOptions.map((option) => {
+                let currentOptionOptions = {}
+                data.map((data) => {
+                    if (currentOptionOptions[data[option]]) {
+                        currentOptionOptions[data[option]] += 1
+                    } else {
+                        currentOptionOptions[data[option]] = 1
+                    }
+                })
+                if (Object.keys(currentOptionOptions).length != data.length && Object.keys(currentOptionOptions).length != 1) {
+                    confirmedOptions = [...confirmedOptions, option]
+                    confirmedFilter = {...confirmedFilter, [option]: []}
+                    confirmedOptionOptions = [...confirmedOptionOptions, currentOptionOptions]
+                }
+            })
+            setNewFilter(confirmedFilter)
+            setFiltersOptions(confirmedOptions)
+            setFiltersOptionsOptions(confirmedOptionOptions)
+        }
+        
+        
+    }, [])
+
+    
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -28,47 +67,35 @@ function Filter({trueFilter, setTrueFilter}) {
         setNewFilter({ ...newFilter, [event.target.name]: filterToChange})
     }
 
-    return (
-        <form className='filter-form' onSubmit={handleSubmit}>
-            <h1>Table Filter</h1>
-            <section className='filter-options'>
-                <fieldset className='type-filter'>
-                    <legend>Type</legend>
-                    <label htmlFor="fruit">
-                        <input type="checkbox" id="fruit" name="type" value="fruit" onChange={handleChange}/>
-                        Fruit
-                    </label>
-                    <label htmlFor="vegetable">
-                        <input type="checkbox" id="vegetable" name="type" value="vegetable" onChange={handleChange}/>
-                        Vegetable
-                    </label>
-                </fieldset>
-                <fieldset  className='color-filter'>
-                    <legend>Color</legend>
-                    {colors.map((color) => {
-                        return (
-                            <label htmlFor={color} key={color}>
-                                <input type="checkbox" id={color} name="color" value={color} onChange={handleChange}/>
-                                {color}
-                            </label>
-                        )
+    if (filtersOptions.length > 0 && filtersOptionsOptions.length > 0) {
+        return (
+            <form className='filter-form' onSubmit={handleSubmit}>
+                <h1>Table Filter</h1>
+                <section className='filter-options'>
+                    {filtersOptions.map((options, index) => {
+                        if (filtersOptionsOptions[index]) {
+                            const optionsArray = Object.keys(filtersOptionsOptions[index])
+                            return (
+                                <fieldset key={`${options}field`} className='type-filter'>
+                                    <legend>{options.toUpperCase()}</legend>
+                                    {optionsArray.map((optionSingle) => {
+                                        return (
+                                            <label key={optionSingle} htmlFor={optionSingle}>
+                                                <input type="checkbox" id={optionSingle} name={options} value={optionSingle} onChange={handleChange}/>
+                                                {optionSingle}
+                                            </label>
+                                    )
+                                    })}
+                                </fieldset>
+                            )
+                        }
                     })}
-                </fieldset>
-                <fieldset  className='flavor-filter'>
-                    <legend>Flavor</legend>
-                    {flavors.map((flavor) => {
-                        return (
-                            <label htmlFor={flavor} key={flavor}>
-                                <input type="checkbox" id={flavor} name="flavor" value={flavor} onChange={handleChange}/>
-                                {flavor}
-                            </label>
-                        )
-                    })}
-                </fieldset>
-            </section>
-            <button className='filter-submit' type="submit">Submit</button>
-        </form>
-    );
+                </section>
+                <button className='filter-submit' type="submit">Submit</button>
+            </form>
+        );
+    }
+    
 }
 
 export default Filter;

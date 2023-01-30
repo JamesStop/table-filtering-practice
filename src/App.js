@@ -22,6 +22,8 @@ const Provider = compose([
 
 function App() {
 
+  let currentData = 'Plant'
+
   const [trueFilter, setTrueFilter] = useState({
     type: [],
     color: [],
@@ -34,13 +36,24 @@ function App() {
   return (
     <div className='main-display'>
       <nav>
-        <Filter trueFilter={trueFilter} setTrueFilter={setTrueFilter}/>
+        <Routes>
+          <Route path='/' element={
+            <Provider>
+              <Filter trueFilter={trueFilter} currentData={currentData} setTrueFilter={setTrueFilter}/>
+            </Provider>}
+          />
+          <Route path='/:id' element={
+            <Provider>
+              <Filter trueFilter={trueFilter} currentData={currentData} setTrueFilter={setTrueFilter}/>
+            </Provider>}
+          />
+        </Routes>
+        
       </nav>
       <div className="table-display">
-        <Routes>
-          <Route path='/' element={<Provider><Table trueFilter={trueFilter} /></Provider>} />
-          <Route path='/:id' element={<Provider><Table trueFilter={trueFilter}/></Provider>} />
-        </Routes>
+        <Provider>
+          <Table trueFilter={trueFilter} currentData={currentData}/>
+        </Provider>
       </div>
     </div>
   );

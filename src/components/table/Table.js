@@ -5,19 +5,15 @@ import { PlantData2Context } from '../../contexts/plantData2';
 import './Table.css'
 
 
-function Table({trueFilter}) {
+function Table({trueFilter, currentData}) {
 
     const { id } = useParams();
     // const [filter, setFilter] = useState({})
-    const data = useContext(PlantData2Context);
+    const data = useContext(PlantDataContext);
     const [tableData, setTableData] = useState(data)
     const filterCategories = ['type', 'color', 'flavor']
 
-    useEffect (() => {
-        if (id) {
-            console.log(id)
-        }
-    }, []);
+    
 
     return (
         <div className='table-center'>
