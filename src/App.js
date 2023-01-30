@@ -1,10 +1,12 @@
 import './App.css';
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useNavigate } from 'react-router';
 import Table from './components/table/Table';
 import Filter from './components/filters/Filter';
 import { PlantDataContextProvider } from './contexts/plantData';
 import { PlantData2ContextProvider } from './contexts/plantData2';
 import { useState } from 'react';
+import { useEffect } from 'react';
+
 
 
 
@@ -22,37 +24,55 @@ const Provider = compose([
 
 function App() {
 
-  let currentData = 'Plant'
-
+  const navigate = useNavigate()
   const [trueFilter, setTrueFilter] = useState({
-    type: [],
-    color: [],
-    flavor: [],
+    usingData: 'Plant',
+    filters: {}
   })
 
+  const handleDataChange = (event) => {
+    setTrueFilter({usingData: event.target.value, filters: []})
+    navigate('/')
+  }
 
 
+  useEffect(() => {
+    document.querySelector(`#${trueFilter.usingData}`).checked = true
+  }, [])
 
   return (
     <div className='main-display'>
-      <nav>
+      <nav className="filter-table">
         <Routes>
           <Route path='/' element={
             <Provider>
-              <Filter trueFilter={trueFilter} currentData={currentData} setTrueFilter={setTrueFilter}/>
+              <Filter trueFilter={trueFilter} setTrueFilter={setTrueFilter}/>
             </Provider>}
           />
           <Route path='/:id' element={
             <Provider>
-              <Filter trueFilter={trueFilter} currentData={currentData} setTrueFilter={setTrueFilter}/>
+              <Filter trueFilter={trueFilter} setTrueFilter={setTrueFilter}/>
             </Provider>}
           />
         </Routes>
-        
+      </nav>
+      <nav className="data-selectors">
+        <form action="" className="data-selector-form">
+          <fieldset>
+            <label htmlFor="Plant">
+              <input type="radio" id="Plant" name="data" value="Plant" onChange={handleDataChange}/>
+              Plant 1
+            </label>
+            <label htmlFor="Plant2">
+              <input type="radio" id="Plant2" name="data" value="Plant2" onChange={handleDataChange}/>
+              Plant 2
+            </label>
+          </fieldset>
+        </form>
       </nav>
       <div className="table-display">
         <Provider>
-          <Table trueFilter={trueFilter} currentData={currentData}/>
+          <Table trueFilter={trueFilter} />
         </Provider>
       </div>
     </div>

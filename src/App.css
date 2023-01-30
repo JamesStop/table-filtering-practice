@@ -25,10 +25,32 @@ body {
   width: 100%;
 }
 
-nav {
-  height: 30%;
+.data-selectors {
+  height: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-table {
+  height: 25%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.data-selector-form {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-selector-form fieldset {
+  width: 100%;
+  border: none;
+  display: flex;
+  gap: 10%;
+  justify-content: center;
 }

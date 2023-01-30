@@ -1,26 +1,42 @@
 import React, {useEffect, useState, useContext} from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { PlantDataContext } from '../../contexts/plantData';
 import { PlantData2Context } from '../../contexts/plantData2';
+import useToString from '../../hooks/toString';
 import './Filter.css'
+
 
 
 function Filter({trueFilter, setTrueFilter, currentData}) {
 
     const { id } = useParams()
-    let data = useContext(PlantDataContext)
-
+    let plantData = useContext(PlantDataContext)
+    let plant2Data = useContext(PlantData2Context)
+    const [data, setData] = useState(plantData)
     const [filtersOptions, setFiltersOptions] = useState([])
     const [filtersOptionsOptions, setFiltersOptionsOptions] = useState([])
     const [newFilter, setNewFilter] = useState({})
     
+    const navigate = useNavigate()
+    
     useEffect (() => {
         if (id) {
-            console.log(id)
+            setTrueFilter(JSON.parse(id))
         }
     }, []);
 
     useEffect(() => {
+        if (trueFilter.usingData == 'Plant') {
+            setData(plantData)
+        } else if (trueFilter.usingData == 'Plant2') {
+            setData(plant2Data)
+        }
+    }, [trueFilter.usingData])
+
+    useEffect(() => {
+        setFiltersOptions([])
+        setFiltersOptionsOptions([])
+        setNewFilter({})
         if (data.length && data.length > 0) {
             const allOptions = Object.keys(data[0])
             let confirmedOptions = []
@@ -41,19 +57,31 @@ function Filter({trueFilter, setTrueFilter, currentData}) {
                     confirmedOptionOptions = [...confirmedOptionOptions, currentOptionOptions]
                 }
             })
-            setNewFilter(confirmedFilter)
             setFiltersOptions(confirmedOptions)
             setFiltersOptionsOptions(confirmedOptionOptions)
+            setNewFilter(confirmedFilter)      
         }
-        
-        
-    }, [])
 
+    }, [data])
+
+    useEffect(() => {
+        setTrueFilter({usingData: trueFilter.usingData, filters: newFilter})
+        if (id) {
+            setTrueFilter(JSON.parse(id))
+            setNewFilter(trueFilter.filters)
+        }
+    }, [Object.keys(newFilter).length])
     
 
-    const handleSubmit = async(event) => {
+    useEffect(() => {
+        
+    }, [trueFilter])
+
+    const handleSubmit = (event) => {
         event.preventDefault();
-        setTrueFilter(newFilter)
+        setTrueFilter({usingData: trueFilter.usingData, filters: newFilter})
+        let url = JSON.stringify(trueFilter)
+        navigate(`/${url}`)
     }
 
     const handleChange = (event) => {

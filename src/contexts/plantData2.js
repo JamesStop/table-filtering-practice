@@ -8,19 +8,19 @@ function PlantData2ContextProvider({children}) {
 
     const DEFAULT_DATA = [
         {
-            name: 'meow',
+            name: 'woof',
             type: 'fruit',
             color: 'orange',
             flavor: 'sweet'
         },
         {
-            name: 'meow',
+            name: 'woof',
             type: 'fruit',
             color: 'red',
             flavor: 'sweet'
         },
         {
-            name: 'meow',
+            name: 'woof',
             type: 'fruit',
             color: 'yellow',
             flavor: 'sour'
@@ -62,19 +62,19 @@ function PlantData2ContextProvider({children}) {
             flavor: 'sweet'
         },
         {
-            name: 'meow',
+            name: 'woof',
             type: 'vegetable',
             color: 'orange',
             flavor: 'sweet'
         },
         {
-            name: 'meow',
+            name: 'woof',
             type: 'vegetable',
             color: 'green',
             flavor: 'bitter'
         },
         {
-            name: 'meow',
+            name: 'woof',
             type: 'vegetable',
             color: 'yellow',
             flavor: 'sweet'
