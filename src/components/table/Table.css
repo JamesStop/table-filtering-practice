@@ -34,9 +34,7 @@ table {
 }
 
 
-th {
-    width: 25%;
-}
+
 
 tbody {
     height: 90%;
@@ -50,6 +48,3 @@ tbody {
     height: 10%;
 }
 
-td {
-    width: 25%;
-}

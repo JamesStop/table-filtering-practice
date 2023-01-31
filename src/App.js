@@ -6,6 +6,7 @@ import { PlantDataContextProvider } from './contexts/plantData';
 import { PlantData2ContextProvider } from './contexts/plantData2';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { NonsenseDataContextProvider } from './contexts/nonsenseData';
 
 
 
@@ -19,7 +20,8 @@ const compose = (providers) =>
 
 const Provider = compose([
   PlantDataContextProvider,
-  PlantData2ContextProvider
+  PlantData2ContextProvider, 
+  NonsenseDataContextProvider
 ])
 
 function App() {
@@ -70,6 +72,10 @@ function App() {
             <label htmlFor="Plant2">
               <input type="radio" id="Plant2" name="data" value="Plant2" onClick={handleDataChange}/>
               Plant 2
+            </label>
+            <label htmlFor="Nonsense">
+              <input type="radio" id="Nonsense" name="data" value="Nonsense" onClick={handleDataChange}/>
+              Nonsense
             </label>
           </fieldset>
         </form>

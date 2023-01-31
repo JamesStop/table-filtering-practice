@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { PlantDataContext } from '../../contexts/plantData';
 import { PlantData2Context } from '../../contexts/plantData2';
+import { NonsenseDataContext } from '../../contexts/nonsenseData';
 import SingleOption from './SingleOption';
 import './Filter.css'
 
@@ -10,8 +11,9 @@ import './Filter.css'
 function Filter({trueFilter, setTrueFilter, currentData}) {
 
     const { id } = useParams()
-    let plantData = useContext(PlantDataContext)
-    let plant2Data = useContext(PlantData2Context)
+    const plantData = useContext(PlantDataContext)
+    const plant2Data = useContext(PlantData2Context)
+    const nonsenseData = useContext(NonsenseDataContext)
     const [data, setData] = useState(plantData)
     const [filtersOptions, setFiltersOptions] = useState([])
     const [filtersOptionsOptions, setFiltersOptionsOptions] = useState([])
@@ -31,6 +33,8 @@ function Filter({trueFilter, setTrueFilter, currentData}) {
             setData(plantData)
         } else if (trueFilter.usingData == 'Plant2') {
             setData(plant2Data)
+        } else if (trueFilter.usingData == 'Nonsense') {
+            setData(nonsenseData)
         }
     }, [trueFilter.usingData])
 
