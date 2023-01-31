@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { PlantDataContext } from '../../contexts/plantData';
 import { PlantData2Context } from '../../contexts/plantData2';
-import useToString from '../../hooks/toString';
+import SingleOption from './SingleOption';
 import './Filter.css'
 
 
@@ -22,6 +22,7 @@ function Filter({trueFilter, setTrueFilter, currentData}) {
     useEffect (() => {
         if (id) {
             setTrueFilter(JSON.parse(id))
+            setNewFilter(trueFilter.filters)
         }
     }, []);
 
@@ -59,23 +60,21 @@ function Filter({trueFilter, setTrueFilter, currentData}) {
             })
             setFiltersOptions(confirmedOptions)
             setFiltersOptionsOptions(confirmedOptionOptions)
-            setNewFilter(confirmedFilter)      
+            setNewFilter(confirmedFilter)
         }
-
     }, [data])
 
     useEffect(() => {
-        setTrueFilter({usingData: trueFilter.usingData, filters: newFilter})
-        if (id) {
-            setTrueFilter(JSON.parse(id))
-            setNewFilter(trueFilter.filters)
+        if (!id) {
+            setTrueFilter({usingData: trueFilter.usingData, filters: newFilter})
         }
     }, [Object.keys(newFilter).length])
     
-
     useEffect(() => {
-        
-    }, [trueFilter])
+        if (id && Object.keys(trueFilter.filters).length > 0) {
+            setNewFilter(trueFilter.filters)
+        }
+    }, [newFilter])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -84,34 +83,22 @@ function Filter({trueFilter, setTrueFilter, currentData}) {
         navigate(`/${url}`)
     }
 
-    const handleChange = (event) => {
-        const filterToChange = newFilter[event.target.name]
-        if (filterToChange.includes(event.target.value)) {
-            const index = filterToChange.indexOf(event.target.value)
-            filterToChange.splice(index, 1)
-        } else {
-            filterToChange.push(event.target.value)
-        }
-        setNewFilter({ ...newFilter, [event.target.name]: filterToChange})
-    }
+    
 
-    if (filtersOptions.length > 0 && filtersOptionsOptions.length > 0) {
+    if (filtersOptions.length > 0 && filtersOptionsOptions.length > 0 && trueFilter.filters) {
         return (
             <form className='filter-form' onSubmit={handleSubmit}>
                 <h1>Table Filter</h1>
                 <section className='filter-options'>
                     {filtersOptions.map((options, index) => {
-                        if (filtersOptionsOptions[index]) {
+                        if (filtersOptionsOptions[index] && trueFilter.filters[options]) {
                             const optionsArray = Object.keys(filtersOptionsOptions[index])
                             return (
-                                <fieldset key={`${options}field`} className='type-filter'>
+                                <fieldset key={`${options}field`} className='filter'>
                                     <legend>{options.toUpperCase()}</legend>
                                     {optionsArray.map((optionSingle) => {
                                         return (
-                                            <label key={optionSingle} htmlFor={optionSingle}>
-                                                <input type="checkbox" id={optionSingle} name={options} value={optionSingle} onChange={handleChange}/>
-                                                {optionSingle}
-                                            </label>
+                                            <SingleOption key={optionSingle} optionSingle={optionSingle} options={options} newFilter={newFilter} setNewFilter={setNewFilter} trueFilter={trueFilter}/>
                                     )
                                     })}
                                 </fieldset>

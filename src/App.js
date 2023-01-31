@@ -31,14 +31,18 @@ function App() {
   })
 
   const handleDataChange = (event) => {
-    setTrueFilter({usingData: event.target.value, filters: []})
-    navigate('/')
+    if (trueFilter.usingData != event.target.value) {
+      setTrueFilter({usingData: event.target.value, filters: []})
+      navigate('/')
+    }
   }
 
 
   useEffect(() => {
     document.querySelector(`#${trueFilter.usingData}`).checked = true
-  }, [])
+  }, [trueFilter.usingData])
+
+  
 
   return (
     <div className='main-display'>
@@ -60,11 +64,11 @@ function App() {
         <form action="" className="data-selector-form">
           <fieldset>
             <label htmlFor="Plant">
-              <input type="radio" id="Plant" name="data" value="Plant" onChange={handleDataChange}/>
+              <input type="radio" id="Plant" name="data" value="Plant" onClick={handleDataChange}/>
               Plant 1
             </label>
             <label htmlFor="Plant2">
-              <input type="radio" id="Plant2" name="data" value="Plant2" onChange={handleDataChange}/>
+              <input type="radio" id="Plant2" name="data" value="Plant2" onClick={handleDataChange}/>
               Plant 2
             </label>
           </fieldset>

@@ -11,7 +11,7 @@
     border: 2px solid black;
 }
 
-.type-filter, .color-filter, .flavor-filter {
+.filter {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -23,9 +23,7 @@
     border-left: none;
 }
 
-.color-filter {
-    border: 1px solid black;
-}
+
 
 .filter-submit {
     margin: 5px;
